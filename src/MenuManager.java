@@ -1,7 +1,12 @@
+import Controllers.CidadaoController;
 import Entitys.Cidadao;
 import Entitys.Gestor;
+import Entitys.Ticket;
 import Entitys.Usuario;
+import Enums.Categoria;
+import Enums.Prioridade;
 
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 /**
@@ -10,6 +15,7 @@ import java.util.Scanner;
 public class MenuManager {
     private Scanner leitor = new Scanner(System.in);
     private int opcao;
+    private CidadaoController cidadaoController = new CidadaoController();
 
     public void limparConsole() {
         // gambiarra
@@ -232,27 +238,61 @@ public class MenuManager {
         System.out.println("                          4 - Pontos de ônibus");
         System.out.println("                          5 - Outro");
         System.out.print("                          Opção: ");
-        int opcaoLoop;
+        int opcaoCategoria;
         do {
-            opcaoLoop = leitor.nextInt();
-        } while (opcaoLoop > 5 || opcaoLoop < 1);
+            opcaoCategoria = leitor.nextInt();
+        } while (opcaoCategoria > 5 || opcaoCategoria < 1);
+
+        leitor.nextLine();
+
+        System.out.println("\n                       Escolha a prioridade da sua solicitação:\n");
+        System.out.println("                          1 - Baixa");
+        System.out.println("                          2 - Normal");
+        System.out.println("                          3 - Alta");
+        System.out.println("                          4 - Urgente");
+        System.out.print("                          Opção: ");
+
+        int opcaoPrioridade;
+        do {
+            opcaoPrioridade = leitor.nextInt();
+        } while (opcaoPrioridade > 4 || opcaoPrioridade < 1);
+
+        leitor.nextLine();
+
         System.out.println("");
         System.out.print("                       Título: ");
-        String titulo = leitor.next();
+        String titulo = leitor.nextLine();
         System.out.print("                       Descrição: ");
-        String descricao = leitor.next();
+        String descricao = leitor.nextLine();
         System.out.print("                       Localização: ");
-        String local = leitor.next();
+        String local = leitor.nextLine();
+        System.out.print("                       Bairro: ");
+        String bairro = leitor.nextLine();
 
-        System.out.println("\n");
-        System.out.println("                             Solicitação criada com sucesso!");
-        // Solicitação recem criada
-        System.out.println("     -------------------------------------------------------------------------------");
-        System.out.println("       N° 1234         Poste sem luz na Av. Teste                       12/01/2021");
-        System.out.println("         Iluminação");
-        System.out.println("         Endereço: Avenida Teste, 1234");
-        System.out.println("         Status: Em aberto");
-        System.out.println("     -------------------------------------------------------------------------------");
+        Ticket novoTicket = new Ticket();
+        novoTicket.setTitulo(titulo);
+        novoTicket.setDescricao(descricao);
+        novoTicket.setLocalizacaoEndereco(local);
+        novoTicket.setBairro(bairro);
+        novoTicket.setPrioridade(Prioridade.fromId(opcaoPrioridade));
+        novoTicket.setCategoria(Categoria.fromId(opcaoCategoria));
+        novoTicket.setIdUsuario(cidadao.getId());
+        Ticket ticketCriado = cidadaoController.criarTicket(novoTicket);
+
+        if (ticketCriado != null) {
+            DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+            System.out.println("\n                             Solicitação criada com sucesso!");
+            System.out.println("     -------------------------------------------------------------------------------");
+            System.out.println("       N° " + ticketCriado.getProtocolo() + "         " + ticketCriado.getTitulo());
+            System.out.println("         Categoria: " + ticketCriado.getCategoria());
+            System.out.println("         Prioridade: " + ticketCriado.getPrioridade());
+            System.out.println("         Endereço: " + ticketCriado.getLocalizacaoEndereco() + " - " + ticketCriado.getBairro());
+            System.out.println("         Prazo Limite (SLA): " + ticketCriado.getPrazoSLA().format(formatador));
+            System.out.println("         Status: " + ticketCriado.getStatus());
+            System.out.println("     -------------------------------------------------------------------------------");
+        }
+
         System.out.println("\n");
         System.out.print("  Para voltar, digite 1:");
         int op;
