@@ -1,5 +1,28 @@
 package Enums;
 
 public enum Categoria {
-    Iluminacao, Buraco, Limpeza
+    ILUMINACAO(1),
+    BURACO(2),
+    LIMPEZA(3),
+    PONTO_DE_ONIBUS(4),
+    OUTRO(5);
+
+    private final int id;
+
+    Categoria(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public static Categoria fromId(int id) {
+        for (Categoria categoria : Categoria.values()) {
+            if (categoria.getId() == id) {
+                return categoria;
+            }
+        }
+        return null;
+    }
 }
