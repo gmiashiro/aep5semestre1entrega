@@ -57,6 +57,14 @@ public class MenuManager {
         System.out.println("      Ele será utilizado por você para acompanhar o progresso de suas ocorrências\n");
         System.out.print("                            CPF: ");
         String cpfCidadao = leitor.next();
+        if (!VerificaCPF.verificarCPF(cpfCidadao)) {
+            do {
+                System.out.println("                          CPF inválido, digite novamente");
+                System.out.print("                      CPF: ");
+                cpfCidadao = leitor.next();
+            } while (!VerificaCPF.verificarCPF(cpfCidadao));
+        }
+
         Cidadao cidadao = new Cidadao();
         return usuarioController.loginCidadao(cpfCidadao);
     }
@@ -105,6 +113,13 @@ public class MenuManager {
         String nome = leitor.next();
         System.out.print("                      CPF: ");
         String cpf = leitor.next();
+        if (!VerificaCPF.verificarCPF(cpf)) {
+            do {
+                System.out.println("                          CPF inválido, digite novamente");
+                System.out.print("                      CPF: ");
+                cpf = leitor.next();
+            } while (!VerificaCPF.verificarCPF(cpf));
+        }
         System.out.print("                      Cargo: ");
         String cargo = leitor.next();
         System.out.print("                      E-mail: ");
