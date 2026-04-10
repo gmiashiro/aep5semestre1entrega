@@ -19,7 +19,6 @@ public class Ticket {
     private Prioridade prioridade;
     private LocalDateTime prazoSLA;
     private int idUsuario;
-    private List<TicketHistorico> listaDeHistoricos;
 
     public Ticket(){
 
@@ -113,11 +112,4 @@ public class Ticket {
         this.idUsuario = idUsuario;
     }
 
-    public List<TicketHistorico> getListaDeHistoricos() {
-        return listaDeHistoricos;
-    }
-
-    public void setListaDeHistoricos(List<TicketHistorico> listaDeHistoricos) {
-        this.listaDeHistoricos = listaDeHistoricos;
-    }
 }
